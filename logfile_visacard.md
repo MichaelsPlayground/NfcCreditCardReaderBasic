@@ -133,7 +133,7 @@ html type:
 ```
 
 code type:
-```text
+
 <code>
 6F File Control Information (FCI) Template
  	84 Dedicated File (DF) Name
@@ -156,7 +156,7 @@ code type:
  	 	 	 	DF20 Unknown tag
  	 	 	 	 	80
 </code>
-```
+
 
 <code>
 
