@@ -7,13 +7,17 @@ file directory that needs to get read with the correct commands. Inside of this 
 "applications" because a credit card may serve for special purposes.
 
 Most of the data on the card is in a data structure called **TLV** = **T**ag | **L**ength | **V**alue. To analyze the data 
-it is extreme helpful to use a TLV-library, for that reason I'm adding the 
+it is extreme helpful to use a TLV-library, for that reason I'm adding the **BER-TLV** library from Evgeniy.
 
+As the response from the card is just binary data it is helpful to use a TLV decoder to get a human readable form of the data. If you prefer 
+a copy & paste workflow you can use the "official" EMV tool to do the work (link below). If you want to print the response within your program 
+you need another library for this task. I used the library **EMV-NFC-Paycard-Enrollment** from Julien Millau. This library is a complete card 
+reading library but I'm using just the "pretty print" part of it.
 
 This document will explain the general procedure to get access to the data on the card. In some other documents you get the 
-programmaticall commands to read a VisaCard, MasterCard and a (German) GiroCard (see links below).
+programmatically commands to read a VisaCard, MasterCard and a (German) GiroCard (see links below).
 
-There are xx steps to read the PAN (primary account number = credit card number) and the card's expiration date that needs to get 
+There are 7 or 9 steps to read the PAN (primary account number = credit card number) and the card's expiration date that needs to get 
 executed in this workflow:
 
 1) read the main directory using the **select PPSE** command. This will retrieve all applications and their **Application ID** available on the card
@@ -34,18 +38,19 @@ separator to the next 4 characters that are the **Expiration Date** in the forma
 After encoding to a hex string one entry may look like this: 08 01 01 00. Each byte is a single information in this format: 
 08 = short file identifier (SFI) | 01 = first record to read | 01 = last record to read | 00 = files included in offline transaction. So this is the 
 information: read sfi at position 8 and one record (1).
-9) 
-10) 
-11) 
-12) **read the files from card**: think of a file directory and the AFL from step 4 lists all files on the card. Read each file and try
-    to find the data we want to show (PAN and expiration date)
-13) **search in each file for the tag 0x57**: tag 0x57 is the **Track 2 Equivalent Data** that has the PAN and expiration date as data fields.
-14) **get PAN and expiration date** from the content in tag 0x57 value.
+9) **analyze each file read from step 8**: there are some tags to search for to retrieve the data we want to get. It could be tag 0x9F6B 
+(Track 2 Data), tag 0x57 (Track 2 Equivalent Data) or tag 0x5a (Application Primary Account Number (PAN)) that contain the card number. 
+Finding tag 0x5f24 gives the Application "Expiration Date". The reading workflow can end at this point.
+
 
 
 ## useful links
 
 For response analysis: BER-TLV library: https://github.com/evsinev/ber-tlv
+
+For a human readable view use the "official" TLV decoder: https://emvlab.org/tlvutils/
+
+Here is link that will show the response from step 3: https://emvlab.org/tlvutils/?data=6f5d8407a0000000031010a5525010564953412044454249542020202020208701029f38189f66049f02069f03069f1a0295055f2a029a039c019f37045f2d02656ebf0c1a9f5a0531082608269f0a080001050100000000bf6304df200180
 
 For pretty printing of the response: EMV-NFC-Paycard-Enrollment: https://github.com/devnied/EMV-NFC-Paycard-Enrollment
 
