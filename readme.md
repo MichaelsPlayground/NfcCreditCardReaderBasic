@@ -14,8 +14,8 @@ a copy & paste workflow you can use the "official" EMV tool to do the work (link
 you need another library for this task. I used the library **EMV-NFC-Paycard-Enrollment** from Julien Millau. This library is a complete card 
 reading library but I'm using just the "pretty print" part of it.
 
-This document will explain the general procedure to get access to the data on the card. In some other documents you get the 
-programmatically commands to read a VisaCard, MasterCard and a (German) GiroCard (see links below).
+This document will explain the **general procedure** to get access to the data on the card. In some other documents you get the 
+programmatically commands to read a **VisaCard**, **MasterCard** and a **(German) GiroCard** (see links below).
 
 There are 7 or 9 steps to read the PAN (primary account number = credit card number) and the card's expiration date that needs to get 
 executed in this workflow:
@@ -42,7 +42,13 @@ information: read sfi at position 8 and one record (1).
 (Track 2 Data), tag 0x57 (Track 2 Equivalent Data) or tag 0x5a (Application Primary Account Number (PAN)) that contain the card number. 
 Finding tag 0x5f24 gives the Application "Expiration Date". The reading workflow can end at this point.
 
+## Links to specific card type readings
 
+[VisaCard reading](visacard.md)
+
+[MasterCard reading](mastercard.md)
+
+[GiroCard reading](girocard.md)
 
 ## useful links
 
