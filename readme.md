@@ -22,17 +22,18 @@ executed in this workflow:
 4) **search for tag 0x9F38 in the response from step 3**: The tag 0x9F38 is the **Processing Options Data Object List (PDOL)** that we need for 
 the next step. The PDOL is a list of tags that the card requests from the reader (usually a payment terminal) and we need to provide the data 
 for each element and return the data. Some cards like (some ?) MasterCards do not return a PDOL so we need to proceed with an "empty" PDOL.
-5) **build a Get Procession Option command**: The PDOL is a list of tags that the card requests from the reader (usually a payment terminal) 
-We need to provide data for each element and return the data in a Get Procession Option (GPO) command. Some cards like (some ?) MasterCards do 
-not return 
-6) **get the processing options**: providing PDOL-data from step 3 & 4 gives the **AFL application file list** where we can read the data
+5) **build a Get Procession Option command**: We return the data requested in the PDOL to the card in a GPO command 
+6) **analyze the Get Processing Option response**: 
 7) 
 8) 
-9) 
-10) **read the files from card**: think of a file directory and the AFL from step 4 lists all files on the card. Read each file and try
+9) search for tag 0x4F (Application Identifier (AID)). – cardproviding PDOL-data from step 3 & 4 gives the **AFL application file list** where we can read the data
+10) 
+11) 
+12) 
+13) **read the files from card**: think of a file directory and the AFL from step 4 lists all files on the card. Read each file and try
     to find the data we want to show (PAN and expiration date)
-11) **search in each file for the tag 0x57**: tag 0x57 is the **Track 2 Equivalent Data** that has the PAN and expiration date as data fields.
-12) **get PAN and expiration date** from the content in tag 0x57 value.
+14) **search in each file for the tag 0x57**: tag 0x57 is the **Track 2 Equivalent Data** that has the PAN and expiration date as data fields.
+15) **get PAN and expiration date** from the content in tag 0x57 value.
 
 
 ## useful links

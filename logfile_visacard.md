@@ -58,7 +58,7 @@ response: 6f2b840e325041592e5359532e4444463031a519bf0c1661144f07a00000000310109f
    A0000000031010
 ```
 
-**step 03 select Application** by using the AID A0000000031010
+**step 03 select Application** by using the AID **A0000000031010** that is specific for a **VisaCard**
 ```plaintext
 command:  00a4040007a000000003101000
 response: 6f5d8407a0000000031010a5525010564953412044454249542020202020208701029f38189f66049f02069f03069f1a0295055f2a029a039c019f37045f2d02656ebf0c1a9f5a0531082608269f0a080001050100000000bf6304df200180
@@ -90,7 +90,7 @@ response: 6f5d8407a0000000031010a5525010564953412044454249542020202020208701029f
      9F66049F02069F03069F1A0295055F2A029A039C019F3704
 ```
 
-Note: for the next step we don't try to fill the PDOL with corret data as requested by the received tag. Instead we are filling the PDOL with 0x00 
+Note: for the next step we don't try to fill the PDOL with correct data as requested by the received tag. Instead we are filling the PDOL with 0x00 
 but leave the requested length.
 
 **step 05 get the processing options**: the card needs a real "terminal country code" so this field is filled with real data: 
