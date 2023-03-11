@@ -23,8 +23,10 @@ executed in this workflow:
 the next step. The PDOL is a list of tags that the card requests from the reader (usually a payment terminal) and we need to provide the data 
 for each element and return the data. Some cards like (some ?) MasterCards do not return a PDOL so we need to proceed with an "empty" PDOL.
 5) **build a Get Procession Option command**: We return the data requested in the PDOL to the card in a GPO command 
-6) **analyze the Get Processing Option response**: 
-7) 
+6) **analyze the Get Processing Option response**: at this point the general workflow divides up in two different workflows. We are searching for 
+the tag 0x94 that is the **Application File Locator (AFL)**. 
+7) 6a) the VisaCards I analyzed   
+6b) the VisaCards I analyzed
 8) 
 9) search for tag 0x4F (Application Identifier (AID)). – cardproviding PDOL-data from step 3 & 4 gives the **AFL application file list** where we can read the data
 10) 
