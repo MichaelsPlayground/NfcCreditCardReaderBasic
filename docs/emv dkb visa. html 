@@ -1,0 +1,229 @@
+NFC tag discovered
+TagId: 0581d28b80f100
+TechList found with these entries:
+android.nfc.tech.IsoDep
+android.nfc.tech.NfcA
+
+*** Tech ***
+Technology IsoDep
+try to read a payment card with PPSE
+
+
+*********************************
+************ step  1 ************
+* select PPSE                   *
+*********************************
+01 select PPSE command length 20 data: 00a404000e325041592e5359532e444446303100
+01 select PPSE response length 60 data: 6f38840e325041592e5359532e4444463031a526bf0c2361214f07a000000003101050085649534120444b428701019f0a0800010502000000009000
+------------------------------------
+6F 38 -- File Control Information (FCI) Template
+      84 0E -- Dedicated File (DF) Name
+            32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 (BINARY)
+      A5 26 -- File Control Information (FCI) Proprietary Template
+            BF 0C 23 -- File Control Information (FCI) Issuer Discretionary Data
+                     61 21 -- Application Template
+                           4F 07 -- Application Identifier (AID) - card
+                                 A0 00 00 00 03 10 10 (BINARY)
+                           50 08 -- Application Label
+                                 56 49 53 41 20 44 4B 42 (=VISA DKB)
+                           87 01 -- Application Priority Indicator
+                                 01 (BINARY)
+                           9F 0A 08 -- [UNKNOWN TAG]
+                                    00 01 05 02 00 00 00 00 (BINARY)
+------------------------------------
+
+
+*********************************
+************ step  2 ************
+* search applications on card   *
+*********************************
+02 analyze select PPSE response and search for tag 0x4F (applications on card)
+Found tag 0x4F 1 time(s):
+application Id (AID): a0000000031010
+
+
+*********************************
+************ step  3 ************
+* select application by AID     *
+*********************************
+03 select application by AID a0000000031010 (number 1)
+card is a VISA credit/debit
+
+03 select AID command length 13 data: 00a4040007a000000003101000
+03 select AID response length 89 data: 6f578407a0000000031010a54c50085649534120444b428701015f2d046465656e9f38189f66049f02069f03069f1a0295055f2a029a039c019f3704bf0c1a9f0a0800010502000000009f5a053109780276bf6304df200180
+------------------------------------
+6F 57 -- File Control Information (FCI) Template
+      84 07 -- Dedicated File (DF) Name
+            A0 00 00 00 03 10 10 (BINARY)
+      A5 4C -- File Control Information (FCI) Proprietary Template
+            50 08 -- Application Label
+                  56 49 53 41 20 44 4B 42 (=VISA DKB)
+            87 01 -- Application Priority Indicator
+                  01 (BINARY)
+            5F 2D 04 -- Language Preference
+                     64 65 65 6E (=deen)
+            9F 38 18 -- Processing Options Data Object List (PDOL)
+                     9F 66 04 -- Terminal Transaction Qualifiers
+                     9F 02 06 -- Amount, Authorised (Numeric)
+                     9F 03 06 -- Amount, Other (Numeric)
+                     9F 1A 02 -- Terminal Country Code
+                     95 05 -- Terminal Verification Results (TVR)
+                     5F 2A 02 -- Transaction Currency Code
+                     9A 03 -- Transaction Date
+                     9C 01 -- Transaction Type
+                     9F 37 04 -- Unpredictable Number
+            BF 0C 1A -- File Control Information (FCI) Issuer Discretionary Data
+                     9F 0A 08 -- [UNKNOWN TAG]
+                              00 01 05 02 00 00 00 00 (BINARY)
+                     9F 5A 05 -- Terminal transaction Type (Interac)
+                              31 09 78 02 76 (BINARY)
+                     BF 63 04 -- [UNKNOWN TAG]
+                              DF 20 01 -- [UNKNOWN TAG]
+                                       80 (BINARY)
+------------------------------------
+
+
+*********************************
+************ step  4 ************
+* search for tag 0x9F38         *
+*********************************
+04 search for tag 0x9F38 in the selectAid response
+
+### processing the VisaCard and GiroCard path ###
+
+found tag 0x9F38 in the selectAid with this length: 24 data: 9f66049f02069f03069f1a0295055f2a029a039c019f3704
+
+
+*********************************
+************ step  5 ************
+* get the processing options    *
+*********************************
+05 get the processing options command length: 41 data: 80a80000238321a0000000000000001000000000000000097800000000000978230301003839303100
+05 run GPO response length: 201 data: 7781c68202200094041002040057134930005025003985d26092012166408100000f9f100706010a039020009f26086eae3b103ad1258b9f2701409f3602005d9f6c0238009f4b81803a9d49a34f6839e0717fe92e76c6c76a7acb2e2ec96a4565c49801f862c8912a2f68ee08ac73258b0eda2f280c78b8eb48d1c0ab7398ed60678f503a74f938b1e5921d893c98f86c0d54b07f0d81c482197d061b683a695afd8cb978dbb2dde8c775b35612a2cae6e814bf51a45a6be5c7c0d779e6f816e91e3c7d96b280f60e
+------------------------------------
+77 81 C6 -- Response Message Template Format 2
+         82 02 -- Application Interchange Profile
+               20 00 (BINARY)
+         94 04 -- Application File Locator (AFL)
+               10 02 04 00 (BINARY)
+         57 13 -- Track 2 Equivalent Data
+               49 30 00 50 25 00 39 85 D2 60 92 01 21 66 40 81
+               00 00 0F (BINARY)
+         9F 10 07 -- Issuer Application Data
+                  06 01 0A 03 90 20 00 (BINARY)
+         9F 26 08 -- Application Cryptogram
+                  6E AE 3B 10 3A D1 25 8B (BINARY)
+         9F 27 01 -- Cryptogram Information Data
+                  40 (BINARY)
+         9F 36 02 -- Application Transaction Counter (ATC)
+                  00 5D (BINARY)
+         9F 6C 02 -- Mag Stripe Application Version Number (Card)
+                  38 00 (BINARY)
+         9F 4B 81 80 -- Signed Dynamic Application Data
+                     3A 9D 49 A3 4F 68 39 E0 71 7F E9 2E 76 C6 C7 6A
+                     7A CB 2E 2E C9 6A 45 65 C4 98 01 F8 62 C8 91 2A
+                     2F 68 EE 08 AC 73 25 8B 0E DA 2F 28 0C 78 B8 EB
+                     48 D1 C0 AB 73 98 ED 60 67 8F 50 3A 74 F9 38 B1
+                     E5 92 1D 89 3C 98 F8 6C 0D 54 B0 7F 0D 81 C4 82
+                     19 7D 06 1B 68 3A 69 5A FD 8C B9 78 DB B2 DD E8
+                     C7 75 B3 56 12 A2 CA E6 E8 14 BF 51 A4 5A 6B E5
+                     C7 C0 D7 79 E6 F8 16 E9 1E 3C 7D 96 B2 80 F6 0E (BINARY)
+------------------------------------
+
+
+*********************************
+************ step  6 ************
+* read files & search PAN       *
+*********************************
+06 read the files from card and search for tag 0x57 in each file
+found tag 0x57 = Track 2 Equivalent Data
+The AFL contains 1 entries to read
+data from AFL 10020400
+read result length: 254 data: 7081fb9081f88893cf85a81325ab8da6a4196eb5787291db7205f61b172b26deb867da427f1d0e438e86400aea81a0f2826b250da618108389bdabe2a75c0168a28bb97645158b57ca8faa1d38d7a56e0a4171ec0d5e048d048dd98106bcadb3b5cac80485ff9c0fc970b4ea95d557fb9dd065bf75eb06f51df5a2c20479058ede6c8a376d9bfbf0c05b9e2b5aac1ec5982e2a9d861573e892da87b68357306e88cb054ab0090e01670a73d23fa239f4ae1283110fca40d46edc6c8021d15b3c147251b3c5e754f0fa9d82b7934ed34a12ef3d0a66c0c2a26a32e9722b10653516b356440aa8eece8d1d023829394adc2f9309ff60fc5baf51c0b24690be
+------------------------------------
+70 81 FB -- Record Template (EMV Proprietary)
+         90 81 F8 -- Issuer Public Key Certificate
+                  88 93 CF 85 A8 13 25 AB 8D A6 A4 19 6E B5 78 72
+                  91 DB 72 05 F6 1B 17 2B 26 DE B8 67 DA 42 7F 1D
+                  0E 43 8E 86 40 0A EA 81 A0 F2 82 6B 25 0D A6 18
+                  10 83 89 BD AB E2 A7 5C 01 68 A2 8B B9 76 45 15
+                  8B 57 CA 8F AA 1D 38 D7 A5 6E 0A 41 71 EC 0D 5E
+                  04 8D 04 8D D9 81 06 BC AD B3 B5 CA C8 04 85 FF
+                  9C 0F C9 70 B4 EA 95 D5 57 FB 9D D0 65 BF 75 EB
+                  06 F5 1D F5 A2 C2 04 79 05 8E DE 6C 8A 37 6D 9B
+                  FB F0 C0 5B 9E 2B 5A AC 1E C5 98 2E 2A 9D 86 15
+                  73 E8 92 DA 87 B6 83 57 30 6E 88 CB 05 4A B0 09
+                  0E 01 67 0A 73 D2 3F A2 39 F4 AE 12 83 11 0F CA
+                  40 D4 6E DC 6C 80 21 D1 5B 3C 14 72 51 B3 C5 E7
+                  54 F0 FA 9D 82 B7 93 4E D3 4A 12 EF 3D 0A 66 C0
+                  C2 A2 6A 32 E9 72 2B 10 65 35 16 B3 56 44 0A A8
+                  EE CE 8D 1D 02 38 29 39 4A DC 2F 93 09 FF 60 FC
+                  5B AF 51 C0 B2 46 90 BE (BINARY)
+------------------------------------
+data from AFL 10020400
+read result length: 9 data: 70079f3201038f0109
+------------------------------------
+70 07 -- Record Template (EMV Proprietary)
+      9F 32 01 -- Issuer Public Key Exponent
+               03 (BINARY)
+      8F 01 -- Certification Authority Public Key Index - card
+            09 (BINARY)
+------------------------------------
+data from AFL 10020400
+read result length: 238 data: 7081eb9f4681b07e3b33a489fb75a23643407d2ebf48a808957165aa538d681213d71495b577086e63a24e847ed29d2ceba4bb3b1784361221287607ace4b8bfce09dd8364d4709293ed52b528623472fb6157094b12367534d7cf5c20b810058c817fb87c130111ee53c3855fd2b2a95449d03795541ea7c6ef942b0b069bfa7caa5d0ec6db0e428f18d03adcf7f92fb7e5516403adc629f3ffbd6900a1f308fbe5d28cba795c6c62d7573333abed15ad00a4da4ba8a99f4701035a0849300050250039855f24032609305f280202765f3401009f0702c0809f4a01829f6e04207000009f69070136ffef163800
+------------------------------------
+70 81 EB -- Record Template (EMV Proprietary)
+         9F 46 81 B0 -- ICC Public Key Certificate
+                     7E 3B 33 A4 89 FB 75 A2 36 43 40 7D 2E BF 48 A8
+                     08 95 71 65 AA 53 8D 68 12 13 D7 14 95 B5 77 08
+                     6E 63 A2 4E 84 7E D2 9D 2C EB A4 BB 3B 17 84 36
+                     12 21 28 76 07 AC E4 B8 BF CE 09 DD 83 64 D4 70
+                     92 93 ED 52 B5 28 62 34 72 FB 61 57 09 4B 12 36
+                     75 34 D7 CF 5C 20 B8 10 05 8C 81 7F B8 7C 13 01
+                     11 EE 53 C3 85 5F D2 B2 A9 54 49 D0 37 95 54 1E
+                     A7 C6 EF 94 2B 0B 06 9B FA 7C AA 5D 0E C6 DB 0E
+                     42 8F 18 D0 3A DC F7 F9 2F B7 E5 51 64 03 AD C6
+                     29 F3 FF BD 69 00 A1 F3 08 FB E5 D2 8C BA 79 5C
+                     6C 62 D7 57 33 33 AB ED 15 AD 00 A4 DA 4B A8 A9 (BINARY)
+         9F 47 01 -- ICC Public Key Exponent
+                  03 (BINARY)
+         5A 08 -- Application Primary Account Number (PAN)
+               49 30 00 50 25 00 39 85 (NUMERIC)
+         5F 24 03 -- Application Expiration Date
+                  26 09 30 (NUMERIC)
+         5F 28 02 -- Issuer Country Code
+                  02 76 (NUMERIC)
+         5F 34 01 -- Application Primary Account Number (PAN) Sequence Number
+                  00 (NUMERIC)
+         9F 07 02 -- Application Usage Control
+                  C0 80 (BINARY)
+         9F 4A 01 -- Static Data Authentication Tag List
+                  82 (BINARY)
+         9F 6E 04 -- Visa Low-Value Payment (VLP) Issuer Authorisation Code
+                  20 70 00 00 (BINARY)
+         9F 69 07 -- UDOL
+                  01 36 FF EF 16 38 00 (BINARY)
+------------------------------------
+
+
+*********************************
+************ step  7 ************
+* print PAN & expire date       *
+*********************************
+07 get PAN and Expiration date from tag 0x57 (Track 2 Equivalent Data)
+data for AID a0000000031010 (VISA credit/debit)
+PAN: 4930005025003985
+Expiration date (YYMM): 260930
+
+single data retrieved from card
+applicationTransactionCounter: 005c (hex), 92 (dec)
+pinTryCounter: 02
+lastOnlineATCRegister: 0041
+logFormat: 9f27019f36029f02069f03069f1a025f2a0295059a039c01
+
+get the application cryptogram
+### tag0x8cFound: 
+no CDOL1 found in files, using an empty one
+getApplicationCryptoCommand length: 6 data: 80ae80000000
+getApplicationCryptoResponse failure
+
