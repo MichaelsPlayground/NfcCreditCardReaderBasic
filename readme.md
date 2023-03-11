@@ -24,12 +24,16 @@ the next step. The PDOL is a list of tags that the card requests from the reader
 for each element and return the data. Some cards like (some ?) MasterCards do not return a PDOL so we need to proceed with an "empty" PDOL.
 5) **build a Get Procession Option command**: We return the data requested in the PDOL to the card in a GPO command 
 6) **analyze the Get Processing Option response**: at this point the general workflow divides up in two different workflows. We are searching for 
-the tag 0x94 that is the **Application File Locator (AFL)**. This is the directory files to read and retrieve more data from the card but not all 
-cards provide this information:
-6a) the VisaCards I analyzed   
-6b) the VisaCards I analyzed
-7) 
-8) search for tag 0x4F (Application Identifier (AID)). – cardproviding PDOL-data from step 3 & 4 gives the **AFL application file list** where we can read the data
+the tag 0x94 that is the **Application File Locator (AFL)**. This is the directory files to read and retrieve more data from the card - proceed 
+with step 8. But not all cards provide this information. The VisaCards I analyzed do not return the AFL but give us enough information included 
+in tag **0x57 (Track 2 Equivalent Data)** - proceed with step 7.
+7) **search for tag 0x57 (Track 2 Equivalent Data)**: The value of this tag is a long data field and the first 16 characters (after encoding the 
+byte array to a hex string) are the **PAN (Primary Account Number)** that is the credit card number. The next character is a "D" working as 
+separator to the next 4 characters that are the **Expiration Date** in the format "YYMM". The card reading workflow can end at this point.
+8) **search for tag 0x94 Application File Locator (AFL)**: The AFL points to one or more files located on the card are in 4 byte format for each file. 
+After encoding to a hex string one entry may look like this: 08 01 01 00. Each byte is a single information in this format: 
+08 = short file identifier (SFI) | 01 = first record to read | 01 = last record to read | 00 = files included in offline transaction. So this is the 
+information: read sfi at position 8 and one record (1).
 9) 
 10) 
 11) 
