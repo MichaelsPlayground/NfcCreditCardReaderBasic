@@ -658,7 +658,6 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                                  * ADVANCED CODE
                                  */
                                 findTag0x8c(tlvsAfl);
-                                findTag0x8d(tlvsAfl);
                             } catch (ArrayIndexOutOfBoundsException e) {
                                 //System.out.println("ERROR: ArrayOutOfBoundsException: " + e.getMessage());
                             }
@@ -687,7 +686,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             tag0x8cFound = tag.getBytesValue();
         }
     }
-    
+
     /**
      * gets the byte value of a tag from transceive response
      *
@@ -1021,9 +1020,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     }
 
     private void provideTextViewDataForExport(TextView textView) {
-        System.out.println("*# get Data:" + textView.getText().toString());
         exportString = textView.getText().toString();
-        System.out.println("*# get Data:" + exportString);
     }
 
     private void prettyPrintData(TextView textView, byte[] responseData) {
@@ -1102,26 +1099,6 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
-    /*
-    private void writeToUiAppendData(String message) {
-        TextView textView =
-        exportString += message + "\n";
-        runOnUiThread(() -> {
-            if (TextUtils.isEmpty(textView.getText().toString())) {
-                if (textView == etLog) {
-                    outputString += message + "\n";
-                }
-                textView.setText(message);
-            } else {
-                String newString = textView.getText().toString() + "\n" + message;
-                if (textView. == etLog) {
-                    outputString += newString + "\n";
-                }
-            }
-            if (debugPrint) System.out.println(message);
-        });
-    }*/
-
     // special version, needs a boolean variable in class header: boolean debugPrint = true;
     // if true this method will print the output additionally to the console
     // this version does not append the string to the exportString
@@ -1134,28 +1111,6 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                 textView.setText(newString);
             }
             if (debugPrint) System.out.println(message);
-        });
-    }
-
-    private void writeToUiAppendOrg(TextView textView, String message) {
-        runOnUiThread(() -> {
-            if (TextUtils.isEmpty(textView.getText().toString())) {
-                textView.setText(message);
-            } else {
-                String newString = textView.getText().toString() + "\n" + message;
-                textView.setText(newString);
-            }
-        });
-    }
-
-    private void writeToUiAppendReverse(TextView textView, String message) {
-        runOnUiThread(() -> {
-            if (TextUtils.isEmpty(textView.getText().toString())) {
-                textView.setText(message);
-            } else {
-                String newString = message + "\n" + textView.getText().toString();
-                textView.setText(newString);
-            }
         });
     }
 
