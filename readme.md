@@ -42,6 +42,8 @@ information: read sfi at position 8 and one record (1).
 (Track 2 Data), tag 0x57 (Track 2 Equivalent Data) or tag 0x5a (Application Primary Account Number (PAN)) that contain the card number. 
 Finding tag 0x5f24 gives the Application "Expiration Date". The reading workflow can end at this point.
 
+Note: If you know the AID you want to read you can skip the steps 1) and 2) and start directly with step 3).
+
 ## Links to specific card type readings
 
 [VisaCard reading](visacard.md)

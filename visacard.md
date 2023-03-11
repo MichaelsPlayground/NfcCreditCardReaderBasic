@@ -1,4 +1,4 @@
-# reading a VisaCard
+# Reading a VisaCard
 
 A **VisaCard** is issued by a bank under the licence of Visa. The are three flavours of cards
 available on the market: the classic **Credit card**, the **Debit card** and sometimes **Prepaid cards**.
@@ -14,7 +14,15 @@ card can't get read because of different tags or templates used on your card. If
 and responses up to the point where the reading of your card is failing I'm trying to help you - 
 just open an issue and copy & paste the data from the export file, thank you.
 
+**Warning: the usage of this program reveals secret information from your Credit Card.** 
+This program does not send the data anywhere but when exporting the mail and/or the file 
+contain these informations. So please be very careful when sending those data using unsecured 
+media like Email or simple internet uploading !
 
+In this workflow I'm using a **VisaCard from Lloyds Bank** that was cancelled some months ago so the PAN and 
+other data shown here not from an active card.
+
+## step 1: read the main directory using the **SELECT PPSE** command
 
 
 
