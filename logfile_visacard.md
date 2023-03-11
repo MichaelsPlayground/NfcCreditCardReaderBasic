@@ -58,6 +58,31 @@ response: 6f2b840e325041592e5359532e4444463031a519bf0c1661144f07a00000000310109f
    A0000000031010
 ```
 
+markdown type
+```markdown
+6F File Control Information (FCI) Template
+    84 Dedicated File (DF) Name
+ 	 	**A0000000031010**
+ 	A5 File Control Information (FCI) Proprietary Template
+ 	 	50 Application Label
+ 	 	 	V I S A D E B I T
+ 	 	87 Application Priority Indicator
+ 	 	 	02
+ 	 	9F38 Processing Options Data Object List (PDOL)
+ 	 	 	9F66049F02069F03069F1A0295055F2A029A039C019F3704
+ 	 	5F2D Language Preference
+ 	 	 	e n
+ 	 	BF0C File Control Information (FCI) Issuer Discretionary Data
+ 	 	 	9F5A Unknown tag
+ 	 	 	 	3108260826
+ 	 	 	9F0A Unknown tag
+ 	 	 	 	0001050100000000
+ 	 	 	BF63 Unknown tag
+ 	 	 	 	DF20 Unknown tag
+ 	 	 	 	 	80
+```
+
+
 **step 03 select Application** by using the AID **A0000000031010** that is specific for a **VisaCard**
 ```plaintext
 command:  00a4040007a000000003101000
