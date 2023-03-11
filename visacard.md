@@ -114,17 +114,17 @@ goods, restaurant bills or getting cash at the ATM so the data is part of the tr
 The card requests these data for the next step and we do need to provide the data in the length that is given in the 
 last byte of the each subtag. Here are two examples:
 
+The card is asking for "Terminal Transaction Qualifiers" (tag 0x9f66) and the length has to be 4 bytes long ("04"):
 ```plaintext
 9F 66 04 -- Terminal Transaction Qualifiers
 ```
-The card is asking for "Terminal Transaction Qualifiers" (tag 0x9f66) and the length has to be 4 bytes long ("04").
 
+The card is asking for the "Transaction Date" (tag 9a) that has to by 3 bytes long ("03"):
 ```plaintext
 9A 03 -- Transaction Date
 ```
-The card is asking for the "Transaction Date" (tag 9a) that has to by 3 bytes long ("03").
 
-When adding all length informations (4+6+..+1+4) we get a total length of 33 bytes that has to be returned to the card.
+When adding all length information's (4+6+..+1+4) we get a **total length of 33 bytes** that has to be returned to the card.
 
 Unfortunately we now have to examine each tag and find useful data to provide. The transaction date e.g. needs to be a 
 date in the format YYMMDD (byte array in hex string encoding). Luckily most of the data fields can be zeroed so there is 
@@ -140,9 +140,10 @@ tag 0x9f1a Terminal Country Code: 09 78
 
 Note: each card issuer can request an individual set of tags so it is possible that your card is requesting some "exotic" data.
 
-## step 5 build a Get Procession Option command
+## step 5: build a Get Procession Option command
 
-The PDOL data are embedded in a command and here are all data elements in one row: `a00000000000000010000000000000000978000000000009782303010038393031`.
+The PDOL data are embedded in a command and here are all data elements in one row: `a00000000000000010000000000000000978000000000009782303010038393031`. 
+This string is 66 characters long, after conversion to a byte array the length is 33 byte - that is the sum of all tags requested by the card in step 
 
 ```plaintext
 05 get the processing options command length: 41 data: 80a80000238321a0000000000000001000000000000000097800000000000978230301003839303100
@@ -170,6 +171,15 @@ The PDOL data are embedded in a command and here are all data elements in one ro
                20 70 00 00 (BINARY)
 ------------------------------------
 ```
+
+## step 6: analyze the Get Processing Option response
+
+
+
+
+
+
+
 
 
 
