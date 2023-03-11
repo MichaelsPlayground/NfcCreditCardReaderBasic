@@ -131,7 +131,7 @@ date in the format YYMMDD (byte array in hex string encoding). Luckily most of t
 not much work to do but - so data fields need to have "accepted" data.
 
 For this purpose I'm using a lookup class were some tags are stored with a working dataset 
-(DolValues.java class nfccreditcards package), e.g.:
+(DolValues.java class in nfccreditcards package), e.g.:
 ```plaintext
 tag 0x9f66 Terminal Transaction Qualifiers: A0 00 00 00
 tag 0x9f1a Terminal Country Code: 09 78
@@ -178,7 +178,19 @@ an unsecure channel like Email !**
 ## step 6: analyze the Get Processing Option response
 
 
+```plaintext
+found tag 0x57 = Track 2 Equivalent Data
 
+
+*********************************
+************ step  7 ************
+* print PAN & expire date       *
+*********************************
+07 get PAN and Expiration date from tag 0x57 (Track 2 Equivalent Data)
+data for AID a0000000031010 (VISA credit/debit)
+PAN: 4921828094896752
+Expiration date (YYMM): 2502
+```
 
 
 
