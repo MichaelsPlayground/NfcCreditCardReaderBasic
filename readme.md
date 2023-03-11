@@ -24,18 +24,19 @@ the next step. The PDOL is a list of tags that the card requests from the reader
 for each element and return the data. Some cards like (some ?) MasterCards do not return a PDOL so we need to proceed with an "empty" PDOL.
 5) **build a Get Procession Option command**: We return the data requested in the PDOL to the card in a GPO command 
 6) **analyze the Get Processing Option response**: at this point the general workflow divides up in two different workflows. We are searching for 
-the tag 0x94 that is the **Application File Locator (AFL)**. 
-7) 6a) the VisaCards I analyzed   
+the tag 0x94 that is the **Application File Locator (AFL)**. This is the directory files to read and retrieve more data from the card but not all 
+cards provide this information:
+6a) the VisaCards I analyzed   
 6b) the VisaCards I analyzed
-8) 
-9) search for tag 0x4F (Application Identifier (AID)). – cardproviding PDOL-data from step 3 & 4 gives the **AFL application file list** where we can read the data
+7) 
+8) search for tag 0x4F (Application Identifier (AID)). – cardproviding PDOL-data from step 3 & 4 gives the **AFL application file list** where we can read the data
+9) 
 10) 
 11) 
-12) 
-13) **read the files from card**: think of a file directory and the AFL from step 4 lists all files on the card. Read each file and try
+12) **read the files from card**: think of a file directory and the AFL from step 4 lists all files on the card. Read each file and try
     to find the data we want to show (PAN and expiration date)
-14) **search in each file for the tag 0x57**: tag 0x57 is the **Track 2 Equivalent Data** that has the PAN and expiration date as data fields.
-15) **get PAN and expiration date** from the content in tag 0x57 value.
+13) **search in each file for the tag 0x57**: tag 0x57 is the **Track 2 Equivalent Data** that has the PAN and expiration date as data fields.
+14) **get PAN and expiration date** from the content in tag 0x57 value.
 
 
 ## useful links
