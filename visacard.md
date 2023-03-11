@@ -145,6 +145,9 @@ Note: each card issuer can request an individual set of tags so it is possible t
 The PDOL data are embedded in a command and here are all data elements in one row: `a00000000000000010000000000000000978000000000009782303010038393031`. 
 This string is 66 characters long, after conversion to a byte array the length is 33 byte - that is the sum of all tags requested by the card in step 
 
+**Warning**: this step may reveal confidential data like the PAN/CreditCard number - be extreme cautious when publishing or posting or sending the response over 
+an unsecure channel like Email !**
+
 ```plaintext
 05 get the processing options command length: 41 data: 80a80000238321a0000000000000001000000000000000097800000000000978230301003839303100
 05 run GPO response length: 73 data: 77478202200057134921828094896752d25022013650000000000f5f3401009f100706040a03a020009f2608cc297291b6d757e49f2701809f360203639f6c0216009f6e0420700000
