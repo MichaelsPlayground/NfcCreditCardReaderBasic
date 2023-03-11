@@ -81,7 +81,28 @@ markdown type
  	 	 	 	DF20 Unknown tag
  	 	 	 	 	80
 ```
-
+```java
+6F File Control Information (FCI) Template
+ 	84 Dedicated File (DF) Name
+ 	 	A0000000031010 	 	// the problem is here 
+ 	A5 File Control Information (FCI) Proprietary Template
+ 	 	50 Application Label
+ 	 	 	V I S A D E B I T
+ 	 	87 Application Priority Indicator
+ 	 	 	02
+ 	 	9F38 Processing Options Data Object List (PDOL)
+ 	 	 	9F66049F02069F03069F1A0295055F2A029A039C019F3704
+ 	 	5F2D Language Preference
+ 	 	 	e n
+ 	 	BF0C File Control Information (FCI) Issuer Discretionary Data
+ 	 	 	9F5A Unknown tag
+ 	 	 	 	3108260826
+ 	 	 	9F0A Unknown tag
+ 	 	 	 	0001050100000000
+ 	 	 	BF63 Unknown tag
+ 	 	 	 	DF20 Unknown tag
+ 	 	 	 	 	80
+```
 
 **step 03 select Application** by using the AID **A0000000031010** that is specific for a **VisaCard**
 ```plaintext
@@ -89,9 +110,7 @@ command:  00a4040007a000000003101000
 response: 6f5d8407a0000000031010a5525010564953412044454249542020202020208701029f38189f66049f02069f03069f1a0295055f2a029a039c019f37045f2d02656ebf0c1a9f5a0531082608269f0a080001050100000000bf6304df200180
 6F File Control Information (FCI) Template
  	84 Dedicated File (DF) Name
-<pre>
- 	 	<b>A0000000031010</b>
-</pre>  	 	
+ 	 	A0000000031010 	 	
  	A5 File Control Information (FCI) Proprietary Template
  	 	50 Application Label
  	 	 	V I S A D E B I T
