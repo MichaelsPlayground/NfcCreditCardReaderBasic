@@ -108,6 +108,7 @@ java type
 
 html type:
 ```html
+<pre>
 6F File Control Information (FCI) Template
  	84 Dedicated File (DF) Name
  	 	<b>A0000000031010</b> 	 	
@@ -128,6 +129,7 @@ html type:
  	 	 	BF63 Unknown tag
  	 	 	 	DF20 Unknown tag
  	 	 	 	 	80
+</pre>
 ```
 
 **step 03 select Application** by using the AID **A0000000031010** that is specific for a **VisaCard**
