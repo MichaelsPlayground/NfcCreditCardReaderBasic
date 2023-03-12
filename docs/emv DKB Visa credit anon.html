@@ -99,35 +99,35 @@ found tag 0x9F38 in the selectAid with this length: 24 data: 9f66049f02069f03069
 * get the processing options    *
 *********************************
 05 get the processing options command length: 41 data: 80a80000238321a0000000000000001000000000000000097800000000000978230301003839303100
-05 run GPO response length: 201 data: 7781c68202200094041002040057134930005025003985d26092012166408100000f9f100706010a039020009f26086eae3b103ad1258b9f2701409f3602005d9f6c0238009f4b81803a9d49a34f6839e0717fe92e76c6c76a7acb2e2ec96a4565c49801f862c8912a2f68ee08ac73258b0eda2f280c78b8eb48d1c0ab7398ed60678f503a74f938b1e5921d893c98f86c0d54b07f0d81c482197d061b683a695afd8cb978dbb2dde8c775b35612a2cae6e814bf51a45a6be5c7c0d779e6f816e91e3c7d96b280f60e
+05 run GPO response length: 201 data: 7781c68202000094041002040057131122334455667788d26092012166408100000f9f100706010a03a020009f26082076e13635995cfb9f2701809f3602005f9f6c0238009f4b81800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 ------------------------------------
 77 81 C6 -- Response Message Template Format 2
          82 02 -- Application Interchange Profile
-               20 00 (BINARY)
+               00 00 (BINARY)
          94 04 -- Application File Locator (AFL)
                10 02 04 00 (BINARY)
          57 13 -- Track 2 Equivalent Data
-               49 30 00 50 25 00 39 85 D2 60 92 01 21 66 40 81
+               11 22 33 44 55 66 77 88D2 60 92 01 21 66 40 81
                00 00 0F (BINARY)
          9F 10 07 -- Issuer Application Data
-                  06 01 0A 03 90 20 00 (BINARY)
+                  06 01 0A 03 A0 20 00 (BINARY)
          9F 26 08 -- Application Cryptogram
-                  6E AE 3B 10 3A D1 25 8B (BINARY)
+                  20 76 E1 36 35 99 5C FB (BINARY)
          9F 27 01 -- Cryptogram Information Data
-                  40 (BINARY)
+                  80 (BINARY)
          9F 36 02 -- Application Transaction Counter (ATC)
-                  00 5D (BINARY)
+                  00 5F (BINARY)
          9F 6C 02 -- Mag Stripe Application Version Number (Card)
                   38 00 (BINARY)
          9F 4B 81 80 -- Signed Dynamic Application Data
-                     3A 9D 49 A3 4F 68 39 E0 71 7F E9 2E 76 C6 C7 6A
-                     7A CB 2E 2E C9 6A 45 65 C4 98 01 F8 62 C8 91 2A
-                     2F 68 EE 08 AC 73 25 8B 0E DA 2F 28 0C 78 B8 EB
-                     48 D1 C0 AB 73 98 ED 60 67 8F 50 3A 74 F9 38 B1
-                     E5 92 1D 89 3C 98 F8 6C 0D 54 B0 7F 0D 81 C4 82
-                     19 7D 06 1B 68 3A 69 5A FD 8C B9 78 DB B2 DD E8
-                     C7 75 B3 56 12 A2 CA E6 E8 14 BF 51 A4 5A 6B E5
-                     C7 C0 D7 79 E6 F8 16 E9 1E 3C 7D 96 B2 80 F6 0E (BINARY)
+                     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+                     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+                     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+                     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+                     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+                     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+                     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+                     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 (BINARY)
 ------------------------------------
 
 
@@ -170,7 +170,7 @@ read result length: 9 data: 70079f3201038f0109
             09 (BINARY)
 ------------------------------------
 data from AFL 10020400
-read result length: 238 data: 7081eb9f4681b07e3b33a489fb75a23643407d2ebf48a808957165aa538d681213d71495b577086e63a24e847ed29d2ceba4bb3b1784361221287607ace4b8bfce09dd8364d4709293ed52b528623472fb6157094b12367534d7cf5c20b810058c817fb87c130111ee53c3855fd2b2a95449d03795541ea7c6ef942b0b069bfa7caa5d0ec6db0e428f18d03adcf7f92fb7e5516403adc629f3ffbd6900a1f308fbe5d28cba795c6c62d7573333abed15ad00a4da4ba8a99f4701035a0849300050250039855f24032609305f280202765f3401009f0702c0809f4a01829f6e04207000009f69070136ffef163800
+read result length: 238 data: 7081eb9f4681b07e3b33a489fb75a23643407d2ebf48a808957165aa538d681213d71495b577086e63a24e847ed29d2ceba4bb3b1784361221287607ace4b8bfce09dd8364d4709293ed52b528623472fb6157094b12367534d7cf5c20b810058c817fb87c130111ee53c3855fd2b2a95449d03795541ea7c6ef942b0b069bfa7caa5d0ec6db0e428f18d03adcf7f92fb7e5516403adc629f3ffbd6900a1f308fbe5d28cba795c6c62d7573333abed15ad00a4da4ba8a99f4701035a0811223344556677885f24032609305f280202765f3401009f0702c0809f4a01829f6e04207000009f690701000000000000
 ------------------------------------
 70 81 EB -- Record Template (EMV Proprietary)
          9F 46 81 B0 -- ICC Public Key Certificate
@@ -188,7 +188,7 @@ read result length: 238 data: 7081eb9f4681b07e3b33a489fb75a23643407d2ebf48a80895
          9F 47 01 -- ICC Public Key Exponent
                   03 (BINARY)
          5A 08 -- Application Primary Account Number (PAN)
-               49 30 00 50 25 00 39 85 (NUMERIC)
+               11 22 33 44 55 66 77 88(NUMERIC)
          5F 24 03 -- Application Expiration Date
                   26 09 30 (NUMERIC)
          5F 28 02 -- Issuer Country Code
@@ -202,7 +202,7 @@ read result length: 238 data: 7081eb9f4681b07e3b33a489fb75a23643407d2ebf48a80895
          9F 6E 04 -- Visa Low-Value Payment (VLP) Issuer Authorisation Code
                   20 70 00 00 (BINARY)
          9F 69 07 -- UDOL
-                  01 36 FF EF 16 38 00 (BINARY)
+                  01 00 00 00 00 00 00 (BINARY)
 ------------------------------------
 
 
@@ -212,11 +212,11 @@ read result length: 238 data: 7081eb9f4681b07e3b33a489fb75a23643407d2ebf48a80895
 *********************************
 07 get PAN and Expiration date from tag 0x57 (Track 2 Equivalent Data)
 data for AID a0000000031010 (VISA credit/debit)
-PAN: 4930005025003985
+PAN: 1122334455667788
 Expiration date (YYMM): 260930
 
 single data retrieved from card
-applicationTransactionCounter: 005c (hex), 92 (dec)
+applicationTransactionCounter: 005e (hex), 94 (dec)
 pinTryCounter: 02
 lastOnlineATCRegister: 0041
 logFormat: 9f27019f36029f02069f03069f1a025f2a0295059a039c01

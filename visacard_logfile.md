@@ -1,5 +1,7 @@
 # VisaCard complete logfile
 
+**Note: the Credit Card number shown below is an anonymize Number.**
+
 NFC tag discovered
 TagId: 020155a0
 TechList found with these entries:
@@ -97,28 +99,28 @@ found tag 0x9F38 in the selectAid with this length: 24 data: 9f66049f02069f03069
 * get the processing options    *
 *********************************
 05 get the processing options command length: 41 data: 80a80000238321a0000000000000001000000000000000097800000000000978230301003839303100
-05 run GPO response length: 73 data: 77478202200057134921828094896752d25022013650000000000f5f3401009f100706040a03a020009f2608cc297291b6d757e49f2701809f360203639f6c0216009f6e0420700000
+05 run GPO response length: 73 data: 77478202200057131122334455667788d25022013650000000000f5f3401009f100706040a03a020009f2608011ab2fe7d6dd2309f2701809f360203689f6c0216009f6e0420700000
 ------------------------------------
 77 47 -- Response Message Template Format 2
-      82 02 -- Application Interchange Profile
-            20 00 (BINARY)
-      57 13 -- Track 2 Equivalent Data
-            49 21 82 80 94 89 67 52 D2 50 22 01 36 50 00 00
-            00 00 0F (BINARY)
-      5F 34 01 -- Application Primary Account Number (PAN) Sequence Number
-               00 (NUMERIC)
-      9F 10 07 -- Issuer Application Data
-               06 04 0A 03 A0 20 00 (BINARY)
-      9F 26 08 -- Application Cryptogram
-               CC 29 72 91 B6 D7 57 E4 (BINARY)
-      9F 27 01 -- Cryptogram Information Data
-               80 (BINARY)
-      9F 36 02 -- Application Transaction Counter (ATC)
-               03 63 (BINARY)
-      9F 6C 02 -- Mag Stripe Application Version Number (Card)
-               16 00 (BINARY)
-      9F 6E 04 -- Visa Low-Value Payment (VLP) Issuer Authorisation Code
-               20 70 00 00 (BINARY)
+82 02 -- Application Interchange Profile
+20 00 (BINARY)
+57 13 -- Track 2 Equivalent Data
+11 22 33 44 55 66 77 88D2 50 22 01 36 50 00 00
+00 00 0F (BINARY)
+5F 34 01 -- Application Primary Account Number (PAN) Sequence Number
+00 (NUMERIC)
+9F 10 07 -- Issuer Application Data
+06 04 0A 03 A0 20 00 (BINARY)
+9F 26 08 -- Application Cryptogram
+01 1A B2 FE 7D 6D D2 30 (BINARY)
+9F 27 01 -- Cryptogram Information Data
+80 (BINARY)
+9F 36 02 -- Application Transaction Counter (ATC)
+03 68 (BINARY)
+9F 6C 02 -- Mag Stripe Application Version Number (Card)
+16 00 (BINARY)
+9F 6E 04 -- Visa Low-Value Payment (VLP) Issuer Authorisation Code
+20 70 00 00 (BINARY)
 ------------------------------------
 
 
@@ -136,7 +138,7 @@ found tag 0x57 = Track 2 Equivalent Data
 *********************************
 07 get PAN and Expiration date from tag 0x57 (Track 2 Equivalent Data)
 data for AID a0000000031010 (VISA credit/debit)
-PAN: 4921828094896752
+PAN: 1122334455667788
 Expiration date (YYMM): 2502
 
 single data retrieved from card

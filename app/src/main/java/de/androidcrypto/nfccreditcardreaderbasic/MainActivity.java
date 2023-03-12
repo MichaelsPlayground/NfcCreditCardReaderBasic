@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     TextView tv1;
     com.google.android.material.textfield.TextInputEditText etData, etLog;
     SwitchMaterial prettyPrintResponse;
+    private View loadingLayout;
 
     private NfcAdapter mNfcAdapter;
     private byte[] tagId;
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         etData = findViewById(R.id.etData);
         etLog = findViewById(R.id.etLog);
         prettyPrintResponse = findViewById(R.id.swPrettyPrint);
+        loadingLayout = findViewById(R.id.loading_layout);
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -121,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     @Override
     public void onTagDiscovered(Tag tag) {
         runOnUiThread(this::clearData);
+        setLoadingLayoutVisibility(true);
         playPing();
         writeToUiAppend(etLog, "NFC tag discovered");
 
@@ -172,70 +176,9 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         runAnonymizing = false;
     }
 
-    private void anonymizePan2() {
-        // search for cleartext PAN in exportString
-        int numberSubstrings = substring_rec(exportString, foundPan);
-        System.out.println("*** found " + foundPan + " in exportString " + numberSubstrings + " times ***");
-        // todo ask for anonymizing yes / no
-        exportString = exportString.replaceAll(foundPan, ANONYMIZED_PAN);
-        numberSubstrings = substring_rec(exportString, foundPan);
-        System.out.println("*** found " + foundPan + " in exportString " + numberSubstrings + " times ***");
-        // as the prettyPrint prints a byte array with a blank after each byte we have to search for these occurrences as well
-        String foundPanWithSpace = foundPan.replaceAll("..", "$0 ");
-        numberSubstrings = substring_rec(exportString, foundPanWithSpace);
-        System.out.println("*** found " + foundPanWithSpace + " in exportString " + numberSubstrings + " times ***");
-        exportString = exportString.replaceAll(foundPanWithSpace, ANONYMIZED_PAN_WITH_SPACE);
-        numberSubstrings = substring_rec(exportString, foundPanWithSpace);
-        System.out.println("*** found " + foundPanWithSpace + " in exportString " + numberSubstrings + " times ***");
-        runAnonymizing = true;
-    }
 
-    private int substring_rec(String str, String sub){
-        if (str.contains(sub)){
-            return 1 + substring_rec(str.replaceFirst(sub, ""), sub);
-        }
-        return 0;
-    }
 
-    private void anonymizePan() {
-        // https://stackoverflow.com/a/2478662/8166854
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        Log.i(TAG, "Do you want to anonymize the export data (recommended) ?");
-                        //Yes button clicked
-                        // search for cleartext PAN in exportString
-                        int numberSubstrings = substring_rec(exportString, foundPan);
-                        exportString = exportString.replaceAll(foundPan, ANONYMIZED_PAN);
-                        numberSubstrings = substring_rec(exportString, foundPan);
-                        // as the prettyPrint prints a byte array with a blank after each byte we have to search for these occurrences as well
-                        String foundPanWithSpace = foundPan.replaceAll("..", "$0 ");
-                        numberSubstrings = substring_rec(exportString, foundPanWithSpace);
-                        exportString = exportString.replaceAll(foundPanWithSpace, ANONYMIZED_PAN_WITH_SPACE);
-                        runAnonymizing = true;
-                        writeToUiToast("The export data (mail or file) were anonymized regarding PAN");
-                        break;
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        //No button clicked
-                        writeToUiToast("The export data (mail or file) were not anonymized");
-                        break;
-                }
-            }
-        };
-        final String selectedFolderString = "Do you want to anonymize the export data (recommended) ?";
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("ANONYMIZE EXPORT STRING ?");
-        builder.setMessage(selectedFolderString).setPositiveButton(android.R.string.yes, dialogClickListener)
-                .setNegativeButton(android.R.string.no, dialogClickListener).show();
-        /*
-        If you want to use the "yes" "no" literals of the user's language you can use this
-        .setPositiveButton(android.R.string.yes, dialogClickListener)
-        .setNegativeButton(android.R.string.no, dialogClickListener)
-         */
-    }
 
     private void readIsoDep(Tag tag) {
         Log.i(TAG, "read a tag with IsoDep technology");
@@ -263,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                     writeToUiAppend(etLog, "01 selecting PPSE is not allowed on card");
                     writeToUiAppend(etLog, "");
                     writeToUiAppend(etLog, "The card is not a credit card, reading aborted");
+                    setLoadingLayoutVisibility(false);
                     try {
                         nfc.close();
                     } catch (IOException e) {
@@ -285,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                     List<BerTlv> tag4fList = tlv4Fs.findAll(new BerTag(0x4F));
                     if (tag4fList.size() < 1) {
                         writeToUiAppend(etLog, "there is no tag 0x4F available, stopping here");
+                        setLoadingLayoutVisibility(false);
                         try {
                             nfc.close();
                         } catch (IOException e) {
@@ -621,6 +566,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                 }
                 // print the complete Log
                 writeToUiFinal(etLog);
+                setLoadingLayoutVisibility(false);
             } catch (IOException e) {
                 Log.e(TAG, "IsoDep Error on connecting to card: " + e.getMessage());
                 //throw new RuntimeException(e);
@@ -628,7 +574,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             try {
                 nfc.close();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                //throw new RuntimeException(e);
             }
 
         }
@@ -1080,6 +1026,63 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     }
 
     /**
+     * section for anonymize the output
+     */
+
+    private void anonymizePan() {
+        // https://stackoverflow.com/a/2478662/8166854
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        Log.i(TAG, "Do you want to anonymize the export data (recommended) ?");
+                        //Yes button clicked
+                        // search for cleartext PAN in exportString
+                        int numberSubstrings = substring_rec(exportString, foundPan);
+                        exportString = exportString.replaceAll(foundPan, ANONYMIZED_PAN);
+                        numberSubstrings = substring_rec(exportString, foundPan);
+                        // as the prettyPrint prints a byte array with a blank after each byte we have to search for these occurrences as well
+                        String foundPanWithSpace = foundPan.replaceAll("..", "$0 ");
+                        numberSubstrings = substring_rec(exportString, foundPanWithSpace);
+                        exportString = exportString.replaceAll(foundPanWithSpace, ANONYMIZED_PAN_WITH_SPACE);
+                        runAnonymizing = true;
+                        writeToUiToast("The export data (mail or file) were anonymized regarding PAN");
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        writeToUiToast("The export data (mail or file) were not anonymized");
+                        break;
+                }
+            }
+        };
+        final String selectedFolderString = "Do you want to anonymize the export data (recommended) ?";
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("ANONYMIZE EXPORT STRING ?");
+        builder.setMessage(selectedFolderString).setPositiveButton(android.R.string.yes, dialogClickListener)
+                .setNegativeButton(android.R.string.no, dialogClickListener).show();
+        /*
+        If you want to use the "yes" "no" literals of the user's language you can use this
+        .setPositiveButton(android.R.string.yes, dialogClickListener)
+        .setNegativeButton(android.R.string.no, dialogClickListener)
+         */
+    }
+
+    /**
+     * count the number of substrings in a string recursively
+     * @param str complete string
+     * @param sub sub string
+     * @return number or 0 if nothing found
+     */
+    private int substring_rec(String str, String sub){
+        if (str.contains(sub)){
+            return 1 + substring_rec(str.replaceFirst(sub, ""), sub);
+        }
+        return 0;
+    }
+
+    /**
      * section for UI
      */
 
@@ -1194,6 +1197,16 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             Toast.makeText(getApplicationContext(),
                     message,
                     Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void setLoadingLayoutVisibility(boolean isVisible) {
+        runOnUiThread(() -> {
+            if (isVisible) {
+                loadingLayout.setVisibility(View.VISIBLE);
+            } else {
+                loadingLayout.setVisibility(View.GONE);
+            }
         });
     }
 
