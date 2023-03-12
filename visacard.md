@@ -1,6 +1,6 @@
 # Reading a VisaCard
 
-A **VisaCard** is issued by a bank under the licence of Visa. The are three flavours of cards
+A **VisaCard** is issued by a bank under the licence of Visa. There are three flavours of cards
 available on the market: the classic **Credit card**, the **Debit card** and sometimes **Prepaid cards**.
 
 The Primary Account Number (PAN) on the chip may differ from the PAN printed on the card for some internal reasons.
@@ -11,13 +11,15 @@ the commands and responses for each step, a more generalized information is avai
 
 A general notice: I could test my program only with the cards I'm obtaining so it might be that your 
 card can't get read because of different tags or templates used on your card. If you give me the commands 
-and responses up to the point where the reading of your card is failing I'm trying to help you - 
+and responses up to the point where the reading of your card is failing, I'm trying to help you - 
 just open an issue and copy & paste the data from the export file, thank you.
 
 **Warning: the usage of this program reveals secret information from your Credit Card.** 
 This program does not send the data anywhere but when exporting the mail and/or the file 
 will contain these informations. So please be very careful when sending those data using unsecured 
-media like Email or simple internet uploading or posting anywhere!
+media like Email or simple internet uploading or posting anywhere! Best option is to use the 
+**anonymize PAN** function available in the menu, it tries to find the PAN and replace it 
+with a dummy PAN (1122 3344 5566 7788).
 
 In this workflow I'm using a **VisaCard from Lloyds Bank** that was terminated some months ago so the PAN and 
 other data shown here are not from an active card.
@@ -145,7 +147,7 @@ Note: each card issuer can request an individual set of tags so it is possible t
 The PDOL data are embedded in a command and here are all data elements in one row: `a00000000000000010000000000000000978000000000009782303010038393031`. 
 This string is 66 characters long, after conversion to a byte array the length is 33 byte - that is the sum of all tags requested by the card in step 4.
 
-Note: firing a Get Processing Option command increases the (card internal) **Application Transaction Counter** (ATC). This is non resetable counter that 
+Note: firing a Get Processing Option command increases the (card internal) **Application Transaction Counter** (ATC). This is a non resetable counter that 
 is 2 byte long, so the **maximum GPO commands are 65535 commands**. When the card reaches this value all further readings are blocked and the card gets 
 **unusable or irrevocal destroyed**, so be vary careful when programming reader loops including this command.
 

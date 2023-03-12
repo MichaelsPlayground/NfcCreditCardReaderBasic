@@ -639,6 +639,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                     byte[] cmd = hexToBytes("00B2000400");
                     cmd[2] = (byte) (iRecords & 0x0FF);
                     cmd[3] |= (byte) (sfiNew & 0x0FF);
+                    writeToUiAppend(etLog, "read command length: " + cmd.length + " data: " + bytesToHex(cmd));
                     try {
                         resultReadRecord = nfc.transceive(cmd);
                         //writeToUiAppend(etLog, "readRecordCommand length: " + cmd.length + " data: " + bytesToHex(cmd));
@@ -744,18 +745,18 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     }
 
     private byte[] checkResponse(byte[] data) {
-        System.out.println("checkResponse: " + bytesToHex(data));
+        //System.out.println("checkResponse: " + bytesToHex(data));
         //if (data.length < 5) return null; // not ok
         if (data.length < 5) {
-            System.out.println("checkResponse: data length " + data.length);
+            //System.out.println("checkResponse: data length " + data.length);
             return null;
         } // not ok
         int status = ((0xff & data[data.length - 2]) << 8) | (0xff & data[data.length - 1]);
         if (status != 0x9000) {
-            System.out.println("status: " + status);
+            //System.out.println("status: " + status);
             return null;
         } else {
-            System.out.println("will return: " + bytesToHex(Arrays.copyOfRange(data, 0, data.length - 2)));
+            //System.out.println("will return: " + bytesToHex(Arrays.copyOfRange(data, 0, data.length - 2)));
             return Arrays.copyOfRange(data, 0, data.length - 2);
         }
     }
