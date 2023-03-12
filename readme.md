@@ -26,7 +26,7 @@ executed in this workflow:
 4) **search for tag 0x9F38 in the response from step 3**: The tag 0x9F38 is the **Processing Options Data Object List (PDOL)** that we need for 
 the next step. The PDOL is a list of tags that the card requests from the reader (usually a payment terminal) and we need to provide the data 
 for each element and return the data. Some cards like (some ?) MasterCards do not return a PDOL so we need to proceed with an "empty" PDOL.
-5) **build a Get Procession Option command**: We return the data requested in the PDOL to the card in a GPO command 
+5) **build a Get Processing Option command**: We return the data requested in the PDOL to the card in a GPO command 
 6) **analyze the Get Processing Option response**: at this point the general workflow divides up in two different workflows. We are searching for 
 the tag 0x94 that is the **Application File Locator (AFL)**. This is the directory files to read and retrieve more data from the card - proceed 
 with step 8. But not all cards provide this information. The VisaCards I analyzed do not return the AFL but give us enough information included 
@@ -61,6 +61,18 @@ For a human readable view use the "official" TLV decoder: https://emvlab.org/tlv
 Here is link that will show the response from step 3: https://emvlab.org/tlvutils/?data=6f5d8407a0000000031010a5525010564953412044454249542020202020208701029f38189f66049f02069f03069f1a0295055f2a029a039c019f37045f2d02656ebf0c1a9f5a0531082608269f0a080001050100000000bf6304df200180
 
 For pretty printing of the response: EMV-NFC-Paycard-Enrollment: https://github.com/devnied/EMV-NFC-Paycard-Enrollment
+
+Soundfiles: https://mobcup.net/ringtone/ping-euf272ye/download/mp3
+
+Below is a full workflow for the steps above. In most cases there are 3 parts for each step:
+- the command send to the card in hex encoding
+- the response from the card in hex encoding
+- the human readable analyze of the response, manually by copy & paste from a TLV decoder website.
+
+For my manual analysis I used the "official" website https://emvlab.org/tlvutils/
+
+Second note: the response from the card has 2 additional bytes at the end (0x9000) that indication that the processing was successful.
+For better reading experience I cut them off.
 
 build.gradle (application):
 ```plaintext

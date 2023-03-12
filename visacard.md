@@ -140,13 +140,21 @@ tag 0x9f1a Terminal Country Code: 09 78
 
 Note: each card issuer can request an individual set of tags so it is possible that your card is requesting some "exotic" data.
 
-## step 5: build a Get Procession Option command
+## step 5: build a Get Processing Option (GPO) command 
 
 The PDOL data are embedded in a command and here are all data elements in one row: `a00000000000000010000000000000000978000000000009782303010038393031`. 
 This string is 66 characters long, after conversion to a byte array the length is 33 byte - that is the sum of all tags requested by the card in step 4.
 
-**Warning**: this step may reveal confidential data like the PAN/CreditCard number - be extreme cautious when publishing or posting or sending the response over 
+Note: firing a Get Processing Option command increases the (card internal) **Application Transaction Counter** (ATC). This is non resetable counter that 
+is 2 byte long, so the **maximum GPO commands are 65535 commands**. When the card reaches this value all further readings are blocked and the card gets 
+**unusable or irrevocal destroyed**, so be vary careful when programming reader loops including this command.
+
+## step 6: analyze the Get Processing Option response
+
+**Warning**: this step may reveal confidential data like the PAN/CreditCard number - be extreme cautious when publishing or posting or sending the response over
 an unsecure channel like Email !**
+
+The card answers with useful details, most important is the content of tag 0x57.
 
 ```plaintext
 05 get the processing options command length: 41 data: 80a80000238321a0000000000000001000000000000000097800000000000978230301003839303100
@@ -175,34 +183,44 @@ an unsecure channel like Email !**
 ------------------------------------
 ```
 
-## step 6: analyze the Get Processing Option response
+# step 7: search for tag 0x57 (Track 2 Equivalent Data)
 
+The **Track 2 Equivalent Data** are a relic from the time when there was just a magnet stripe on the card that had 2 tracks. 
+As the storage was limited on those storage medium all data are compressed, so lets have a deeper look into the data:
 
 ```plaintext
-found tag 0x57 = Track 2 Equivalent Data
+57 13 -- Track 2 Equivalent Data
+      49 21 82 80 94 89 67 52 D2 50 22 01 36 50 00 00 00 00 0F (BINARY)
+```
 
+Again a warning regarding the revealing of confidential data: the Credit Card number shown here is from a 
+credit card that is not any more in use since some months and the card number is blocked by the bank.
 
-*********************************
-************ step  7 ************
-* print PAN & expire date       *
-*********************************
+The data are the hex encoded string of a 13 byte long byte array. The first 16 character (8 bytes) are 
+the Credit Card number we are looking for (4921 8280 9489 6752). The number is followed by a "D" character 
+that works a separator to the next field that is the 4 characters long Expiration date (format YYMM, 25 02 
+= End of February 2025).
+
+```plaintext
 07 get PAN and Expiration date from tag 0x57 (Track 2 Equivalent Data)
 data for AID a0000000031010 (VISA credit/debit)
 PAN: 4921828094896752
 Expiration date (YYMM): 2502
 ```
 
+At his point the reading can stop, my program retrieves 4 additional data fields from the card: the Application 
+Transaction Counter, the left PIN try counter, the Last Online Transaction Counter and the log format.
 
+At last the program tries to run the "getApplicationCryptoCommand" but it fails, probably because my card doesnt 
+have the function avaiable.
 
-# step 7: search for tag 0x57 (Track 2 Equivalent Data)
-
-
-
+On a separate page you can see the complete logfile for this reading.
 
 # Useful links
 
 [Complete list of Application Identifiers (AID):](https://www.eftlab.com/knowledge-base/complete-list-of-application-identifiers-aid)
 
+[complete VisaCard logfile:](visacard_logfile.md)
 
 back to the general readme document: [readme](readme.md)
 

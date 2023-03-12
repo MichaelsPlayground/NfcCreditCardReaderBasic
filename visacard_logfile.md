@@ -1,0 +1,153 @@
+# VisaCard complete logfile
+
+NFC tag discovered
+TagId: 020155a0
+TechList found with these entries:
+android.nfc.tech.IsoDep
+android.nfc.tech.NfcA
+
+*** Tech ***
+Technology IsoDep
+try to read a payment card with PPSE
+
+
+*********************************
+************ step  1 ************
+* select PPSE                   *
+*********************************
+01 select PPSE command length 20 data: 00a404000e325041592e5359532e444446303100
+01 select PPSE response length 47 data: 6f2b840e325041592e5359532e4444463031a519bf0c1661144f07a00000000310109f0a0800010501000000009000
+------------------------------------
+6F 2B -- File Control Information (FCI) Template
+      84 0E -- Dedicated File (DF) Name
+            32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 (BINARY)
+      A5 19 -- File Control Information (FCI) Proprietary Template
+            BF 0C 16 -- File Control Information (FCI) Issuer Discretionary Data
+                     61 14 -- Application Template
+                           4F 07 -- Application Identifier (AID) - card
+                                 A0 00 00 00 03 10 10 (BINARY)
+                           9F 0A 08 -- [UNKNOWN TAG]
+                                    00 01 05 01 00 00 00 00 (BINARY)
+------------------------------------
+
+
+*********************************
+************ step  2 ************
+* search applications on card   *
+*********************************
+02 analyze select PPSE response and search for tag 0x4F (applications on card)
+Found tag 0x4F 1 time(s):
+application Id (AID): a0000000031010
+
+
+*********************************
+************ step  3 ************
+* select application by AID     *
+*********************************
+03 select application by AID a0000000031010 (number 1)
+card is a VISA credit/debit
+
+03 select AID command length 13 data: 00a4040007a000000003101000
+03 select AID response length 95 data: 6f5d8407a0000000031010a5525010564953412044454249542020202020208701029f38189f66049f02069f03069f1a0295055f2a029a039c019f37045f2d02656ebf0c1a9f5a0531082608269f0a080001050100000000bf6304df200180
+------------------------------------
+6F 5D -- File Control Information (FCI) Template
+      84 07 -- Dedicated File (DF) Name
+            A0 00 00 00 03 10 10 (BINARY)
+      A5 52 -- File Control Information (FCI) Proprietary Template
+            50 10 -- Application Label
+                  56 49 53 41 20 44 45 42 49 54 20 20 20 20 20 20 (=VISA DEBIT      )
+            87 01 -- Application Priority Indicator
+                  02 (BINARY)
+            9F 38 18 -- Processing Options Data Object List (PDOL)
+                     9F 66 04 -- Terminal Transaction Qualifiers
+                     9F 02 06 -- Amount, Authorised (Numeric)
+                     9F 03 06 -- Amount, Other (Numeric)
+                     9F 1A 02 -- Terminal Country Code
+                     95 05 -- Terminal Verification Results (TVR)
+                     5F 2A 02 -- Transaction Currency Code
+                     9A 03 -- Transaction Date
+                     9C 01 -- Transaction Type
+                     9F 37 04 -- Unpredictable Number
+            5F 2D 02 -- Language Preference
+                     65 6E (=en)
+            BF 0C 1A -- File Control Information (FCI) Issuer Discretionary Data
+                     9F 5A 05 -- Terminal transaction Type (Interac)
+                              31 08 26 08 26 (BINARY)
+                     9F 0A 08 -- [UNKNOWN TAG]
+                              00 01 05 01 00 00 00 00 (BINARY)
+                     BF 63 04 -- [UNKNOWN TAG]
+                              DF 20 01 -- [UNKNOWN TAG]
+                                       80 (BINARY)
+------------------------------------
+
+
+*********************************
+************ step  4 ************
+* search for tag 0x9F38         *
+*********************************
+04 search for tag 0x9F38 in the selectAid response
+
+### processing the VisaCard and GiroCard path ###
+
+found tag 0x9F38 in the selectAid with this length: 24 data: 9f66049f02069f03069f1a0295055f2a029a039c019f3704
+
+
+*********************************
+************ step  5 ************
+* get the processing options    *
+*********************************
+05 get the processing options command length: 41 data: 80a80000238321a0000000000000001000000000000000097800000000000978230301003839303100
+05 run GPO response length: 73 data: 77478202200057134921828094896752d25022013650000000000f5f3401009f100706040a03a020009f2608cc297291b6d757e49f2701809f360203639f6c0216009f6e0420700000
+------------------------------------
+77 47 -- Response Message Template Format 2
+      82 02 -- Application Interchange Profile
+            20 00 (BINARY)
+      57 13 -- Track 2 Equivalent Data
+            49 21 82 80 94 89 67 52 D2 50 22 01 36 50 00 00
+            00 00 0F (BINARY)
+      5F 34 01 -- Application Primary Account Number (PAN) Sequence Number
+               00 (NUMERIC)
+      9F 10 07 -- Issuer Application Data
+               06 04 0A 03 A0 20 00 (BINARY)
+      9F 26 08 -- Application Cryptogram
+               CC 29 72 91 B6 D7 57 E4 (BINARY)
+      9F 27 01 -- Cryptogram Information Data
+               80 (BINARY)
+      9F 36 02 -- Application Transaction Counter (ATC)
+               03 63 (BINARY)
+      9F 6C 02 -- Mag Stripe Application Version Number (Card)
+               16 00 (BINARY)
+      9F 6E 04 -- Visa Low-Value Payment (VLP) Issuer Authorisation Code
+               20 70 00 00 (BINARY)
+------------------------------------
+
+
+*********************************
+************ step  6 ************
+* read files & search PAN       *
+*********************************
+06 read the files from card and search for tag 0x57 in each file
+found tag 0x57 = Track 2 Equivalent Data
+
+
+*********************************
+************ step  7 ************
+* print PAN & expire date       *
+*********************************
+07 get PAN and Expiration date from tag 0x57 (Track 2 Equivalent Data)
+data for AID a0000000031010 (VISA credit/debit)
+PAN: 4921828094896752
+Expiration date (YYMM): 2502
+
+single data retrieved from card
+applicationTransactionCounter: 0362 (hex), 866 (dec)
+pinTryCounter: 03
+lastOnlineATCRegister: 0295
+logFormat: NULL
+
+get the application cryptogram
+### tag0x8cFound: 
+no CDOL1 found in files, using an empty one
+getApplicationCryptoCommand length: 6 data: 80ae80000000
+getApplicationCryptoResponse failure
+
