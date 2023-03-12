@@ -6,6 +6,7 @@ import static de.androidcrypto.nfccreditcardreaderbasic.BinaryUtils.intToByteArr
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -30,6 +31,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -75,6 +77,10 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     String outputString = ""; // used for the UI output
     // exporting the data
     String exportString = "";
+    String foundPan = "";
+    private final String ANONYMIZED_PAN = "1122334455667788";
+    private final String ANONYMIZED_PAN_WITH_SPACE = "11 22 33 44 55 66 77 88";
+    private boolean runAnonymizing = false;
     String exportStringFileName = "emv.html";
     String stepSeparatorString = "*********************************";
 
@@ -162,6 +168,73 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         aidSelectedForAnalyzeName = "";
         outputString = "";
         tag0x8cFound = new byte[0];
+        foundPan = "";
+        runAnonymizing = false;
+    }
+
+    private void anonymizePan2() {
+        // search for cleartext PAN in exportString
+        int numberSubstrings = substring_rec(exportString, foundPan);
+        System.out.println("*** found " + foundPan + " in exportString " + numberSubstrings + " times ***");
+        // todo ask for anonymizing yes / no
+        exportString = exportString.replaceAll(foundPan, ANONYMIZED_PAN);
+        numberSubstrings = substring_rec(exportString, foundPan);
+        System.out.println("*** found " + foundPan + " in exportString " + numberSubstrings + " times ***");
+        // as the prettyPrint prints a byte array with a blank after each byte we have to search for these occurrences as well
+        String foundPanWithSpace = foundPan.replaceAll("..", "$0 ");
+        numberSubstrings = substring_rec(exportString, foundPanWithSpace);
+        System.out.println("*** found " + foundPanWithSpace + " in exportString " + numberSubstrings + " times ***");
+        exportString = exportString.replaceAll(foundPanWithSpace, ANONYMIZED_PAN_WITH_SPACE);
+        numberSubstrings = substring_rec(exportString, foundPanWithSpace);
+        System.out.println("*** found " + foundPanWithSpace + " in exportString " + numberSubstrings + " times ***");
+        runAnonymizing = true;
+    }
+
+    private int substring_rec(String str, String sub){
+        if (str.contains(sub)){
+            return 1 + substring_rec(str.replaceFirst(sub, ""), sub);
+        }
+        return 0;
+    }
+
+    private void anonymizePan() {
+        // https://stackoverflow.com/a/2478662/8166854
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        Log.i(TAG, "Do you want to anonymize the export data (recommended) ?");
+                        //Yes button clicked
+                        // search for cleartext PAN in exportString
+                        int numberSubstrings = substring_rec(exportString, foundPan);
+                        exportString = exportString.replaceAll(foundPan, ANONYMIZED_PAN);
+                        numberSubstrings = substring_rec(exportString, foundPan);
+                        // as the prettyPrint prints a byte array with a blank after each byte we have to search for these occurrences as well
+                        String foundPanWithSpace = foundPan.replaceAll("..", "$0 ");
+                        numberSubstrings = substring_rec(exportString, foundPanWithSpace);
+                        exportString = exportString.replaceAll(foundPanWithSpace, ANONYMIZED_PAN_WITH_SPACE);
+                        runAnonymizing = true;
+                        writeToUiToast("The export data (mail or file) were anonymized regarding PAN");
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        writeToUiToast("The export data (mail or file) were not anonymized");
+                        break;
+                }
+            }
+        };
+        final String selectedFolderString = "Do you want to anonymize the export data (recommended) ?";
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("ANONYMIZE EXPORT STRING ?");
+        builder.setMessage(selectedFolderString).setPositiveButton(android.R.string.yes, dialogClickListener)
+                .setNegativeButton(android.R.string.no, dialogClickListener).show();
+        /*
+        If you want to use the "yes" "no" literals of the user's language you can use this
+        .setPositiveButton(android.R.string.yes, dialogClickListener)
+        .setNegativeButton(android.R.string.no, dialogClickListener)
+         */
     }
 
     private void readIsoDep(Tag tag) {
@@ -329,7 +402,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                                         writeToUiAppendNoExport(etData, "data for AID " + aidSelectedForAnalyze + " (" + aidSelectedForAnalyzeName + ")");
                                         writeToUiAppendNoExport(etData, "PAN: " + parts[0]);
                                         writeToUiAppendNoExport(etData, "Expiration date (YYMM): " + parts[1]);
-
+                                        foundPan = parts[0];
                                         // print single data
                                         printSingleData(etLog, applicationTransactionCounter, pinTryCounter, lastOnlineATCRegister, logFormat);
 
@@ -419,6 +492,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                                         writeToUiAppendNoExport(etData, "data for AID " + aidSelectedForAnalyze + " (" + aidSelectedForAnalyzeName + ")");
                                         writeToUiAppendNoExport(etData, "PAN: " + parts[0]);
                                         writeToUiAppendNoExport(etData, "Expiration date (YYMMDD): " + parts[1]);
+                                        foundPan = parts[0];
                                     } else {
                                         // do nothing
                                     }
@@ -502,6 +576,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                                         writeToUiAppendNoExport(etData, "data for AID " + aidSelectedForAnalyze + " (" + aidSelectedForAnalyzeName + ")");
                                         writeToUiAppendNoExport(etData, "PAN: " + parts[0]);
                                         writeToUiAppendNoExport(etData, "Expiration date (YYMMDD): " + parts[1]);
+                                        foundPan = parts[0];
                                     }
                                     // print single data
                                     printSingleData(etLog, applicationTransactionCounter, pinTryCounter, lastOnlineATCRegister, logFormat);
@@ -1227,6 +1302,15 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
                 clearData();
+                return false;
+            }
+        });
+
+        MenuItem mAnonymizePan = menu.findItem(R.id.action_anonymize_pan);
+        mAnonymizePan.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                anonymizePan();
                 return false;
             }
         });
