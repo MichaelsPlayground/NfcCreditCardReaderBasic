@@ -19,7 +19,7 @@ This program does not send the data anywhere but when exporting the mail and/or 
 will contain these informations. So please be very careful when sending those data using unsecured 
 media like Email or simple internet uploading or posting anywhere!
 
-In this workflow I'm using a **VisaCard from Lloyds Bank** that was cancelled some months ago so the PAN and 
+In this workflow I'm using a **VisaCard from Lloyds Bank** that was terminated some months ago so the PAN and 
 other data shown here are not from an active card.
 
 ## step 1: read the main directory using the SELECT PPSE command
