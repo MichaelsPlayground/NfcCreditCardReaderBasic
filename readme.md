@@ -52,6 +52,12 @@ Note: If you know the AID you want to read you can skip the steps 1) and 2) and 
 
 [GiroCard reading](girocard.md)
 
+Complete logfiles from card reading:
+
+[complete VisaCard logfile:](visacard_logfile.md)
+
+[complete VisaCard logfile (second card):](visacard2_logfile.md)
+
 ## useful links
 
 For response analysis: BER-TLV library: https://github.com/evsinev/ber-tlv

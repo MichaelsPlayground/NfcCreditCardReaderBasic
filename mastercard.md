@@ -19,3 +19,19 @@ This program does not send the data anywhere but when exporting the mail and/or 
 contain these informations. So please be very careful when sending those data using unsecured
 media like Email or simple internet uploading !
 
+
+
+
+
+
+# Useful links
+
+[Complete list of Application Identifiers (AID):](https://www.eftlab.com/knowledge-base/complete-list-of-application-identifiers-aid)
+
+
+back to the general readme document: [readme](readme.md)
+
+go the VisaCard document: [VisaCard reading](visacard.md)
+
+go the GiroCard document: [GiroCard reading](girocard.md)
+

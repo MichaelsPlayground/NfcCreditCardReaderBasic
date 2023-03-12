@@ -29,5 +29,17 @@ media like Email or simple internet uploading !
 
 
 
+# Useful links
+
+[Complete list of Application Identifiers (AID):](https://www.eftlab.com/knowledge-base/complete-list-of-application-identifiers-aid)
+
+
+
+back to the general readme document: [readme](readme.md)
+
+go the VisaCard document: [VisaCard reading](visacard.md)
+
+go the MasterCard document: [MasterCard reading](mastercard.md)
+
 
 

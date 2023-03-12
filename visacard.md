@@ -403,8 +403,6 @@ getApplicationCryptoResponse failure
 
 back to the general readme document: [readme](readme.md)
 
-go the VisaCard document: [VisaCard reading](visacard.md)
-
 go the MasterCard document: [MasterCard reading](mastercard.md)
 
 go the GiroCard document: [GiroCard reading](girocard.md)
