@@ -214,16 +214,21 @@ read result length: 169 data: 7081a69f420209785f25032203015f24032403315a08112233
          9F 4A 01 -- Static Data Authentication Tag List
                   82 (BINARY)
          57 13 -- Track 2 Equivalent Data
-               11 22 33 44 55 66 77 88D2 40 32 21 27 94 32 90
+               11 22 33 44 55 66 77 88 D2 40 32 21 27 94 32 90
                00 00 0F (BINARY)
 ------------------------------------
 ```
 
+```plaintext
 
+```
 
 
 ```plaintext
-
+07 get PAN and Expiration date from tag 0x57 (Track 2 Equivalent Data)
+data for AID a0000000041010 (MasterCard)
+PAN: 1122334455667788
+Expiration date (YYMM): 240331
 ```
 
 
