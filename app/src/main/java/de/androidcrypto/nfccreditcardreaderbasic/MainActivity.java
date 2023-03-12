@@ -176,10 +176,6 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         runAnonymizing = false;
     }
 
-
-
-
-
     private void readIsoDep(Tag tag) {
         Log.i(TAG, "read a tag with IsoDep technology");
         IsoDep nfc = null;
