@@ -539,6 +539,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
      * @return a String with PAN and Expiration date if found
      */
     private String readPanFromFilesFromGpo(IsoDep nfc, byte[] getProcessingOptions) {
+        writeToUiAppend(etLog, "");
         String pan = "";
         String expirationDate = "";
         BerTlvParser parser = new BerTlvParser();
@@ -565,6 +566,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             List<byte[]> tag94BytesList = divideArray(tag94Bytes, 4);
             int tag94BytesListLength = tag94BytesList.size();
             //writeToUiAppend(etLog, "tag94Bytes divided into " + tag94BytesListLength + " arrays");
+            writeToUiAppend(etLog, "");
             writeToUiAppend(etLog, "The AFL contains " + tag94BytesListLength + " entries to read");
             for (int i = 0; i < tag94BytesListLength; i++) {
                 //writeToUiAppend(etLog, "get sfi + record for array " + i + " data: " + bytesToHex(tag94BytesList.get(i)));
@@ -584,17 +586,21 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                 for (int iRecords = (int) rec1; iRecords <= (int) recL; iRecords++) {
                     //System.out.println("** for loop start " + (int) rec1 + " to " + (int) recL + " iRecords: " + iRecords);
 
-                    //System.out.println("*#* readRecors iRecords: " + iRecords);
+                    //System.out.println("*#* readRecord iRecords: " + iRecords);
                     byte[] cmd = hexToBytes("00B2000400");
                     cmd[2] = (byte) (iRecords & 0x0FF);
                     cmd[3] |= (byte) (sfiNew & 0x0FF);
+                    writeToUiAppend(etLog, "");
                     writeToUiAppend(etLog, "read command length: " + cmd.length + " data: " + bytesToHex(cmd));
+
                     try {
                         resultReadRecord = nfc.transceive(cmd);
                         //writeToUiAppend(etLog, "readRecordCommand length: " + cmd.length + " data: " + bytesToHex(cmd));
                         byte[] resultReadRecordOk = checkResponse(resultReadRecord);
                         if (resultReadRecordOk != null) {
-                            writeToUiAppend(etLog, "data from AFL " + bytesToHex(tag94BytesListEntry));
+                            //writeToUiAppend(etLog, "data from AFL " + bytesToHex(tag94BytesListEntry)); // given wrong output for second or third files in multiple records
+                            writeToUiAppend(etLog, "data from AFL was: " + bytesToHex(tag94BytesListEntry));
+                            writeToUiAppend(etLog, "data from AFL " + "SFI: " + String.format("%02X", sfiOrg) + " REC: " + String.format("%02d", iRecords));
                             writeToUiAppend(etLog, "read result length: " + resultReadRecordOk.length + " data: " + bytesToHex(resultReadRecordOk));
                             // pretty print of response
                             if (isPrettyPrintResponse) {
