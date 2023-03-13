@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     String exportString = "";
     String foundPan = "";
     private final String ANONYMIZED_PAN = "1122334455667788";
-    private final String ANONYMIZED_PAN_WITH_SPACE = "11 22 33 44 55 66 77 88";
+    private final String ANONYMIZED_PAN_WITH_SPACE = "11 22 33 44 55 66 77 88 ";
     private boolean runAnonymizing = false;
     String exportStringFileName = "emv.html";
     String stepSeparatorString = "*********************************";
