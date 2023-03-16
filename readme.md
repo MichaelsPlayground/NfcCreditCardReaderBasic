@@ -60,6 +60,8 @@ Complete logfiles from card reading:
 
 ## useful links
 
+PPSE (Paypass Payment System Environment)
+
 For response analysis: BER-TLV library: https://github.com/evsinev/ber-tlv
 
 For a human readable view use the "official" TLV decoder: https://emvlab.org/tlvutils/
