@@ -483,6 +483,9 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         } else {
             writeToUiAppend(etLog, "tag 0x57 not found, try to find in tag 0x94 = AFL");
         }
+
+        // todo append code like NfcEmvExample - Main Activity - lines 657 ff
+
         // search for tag 0x94 = AFL
         BerTlvs tlvsGpo02 = parser.parse(getProcessingOptions);
         BerTlv tag94 = tlvsGpo02.find(new BerTag(0x94));
