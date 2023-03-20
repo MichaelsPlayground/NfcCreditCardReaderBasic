@@ -44,6 +44,8 @@ import com.payneteasy.tlv.BerTlv;
 import com.payneteasy.tlv.BerTlvParser;
 import com.payneteasy.tlv.BerTlvs;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
@@ -404,10 +406,14 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                                                 if (isPrettyPrintResponse)
                                                     prettyPrintData(etLog, getApplicationCryptoResponseOk);
                                             } else {
-                                                writeToUiAppend(etLog, "getApplicationCryptoResponse length: " + getApplicationCryptoResponse.length + " data: " + bytesToHex(getApplicationCryptoResponse));
+                                                writeToUiAppend(etLog, "getApplicationCryptoResponse us NULL");
                                             }
                                         } else {
-                                            writeToUiAppend(etLog, "getApplicationCryptoResponse length: " + getApplicationCryptoResponse.length + " data: " + bytesToHex(getApplicationCryptoResponse));
+                                            if (getApplicationCryptoResponse != null) {
+                                                writeToUiAppend(etLog, "getApplicationCryptoResponse length: " + getApplicationCryptoResponse.length + " data: " + bytesToHex(getApplicationCryptoResponse));
+                                            } else {
+                                                writeToUiAppend(etLog, "getApplicationCryptoResponse is NULL");
+                                            }
                                         }
                                     } else {
                                         // no cdol1 found
@@ -484,17 +490,36 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             writeToUiAppend(etLog, "tag 0x57 not found, try to find in tag 0x94 = AFL");
         }
 
-        // todo append code like NfcEmvExample - Main Activity - lines 657 ff
+        byte[] aflBytes = null;
+
+        /**
+         * response can be a tag 77 Response Message Template Format 2
+         * (found with my Visa-, Master- and German Giro-Cards)
+         * or a tag 80 Response Message Template Format 1
+         * (found with my American Express card)
+         */
+
 
         // search for tag 0x94 = AFL
         BerTlvs tlvsGpo02 = parser.parse(getProcessingOptions);
         BerTlv tag94 = tlvsGpo02.find(new BerTag(0x94));
         if (tag94 != null) {
-            byte[] tag94Bytes = tag94.getBytesValue();
-            //writeToUiAppend(etLog, "AFL data: " + bytesToHex(tag94Bytes));
-            //System.out.println("AFL data: " + bytesToHex(tag94Bytes));
+            // it is a template 2
+            aflBytes = tag94.getBytesValue();
+        }
+        BerTlv tag80 = tlvsGpo02.find(new BerTag(0x80));
+        if (tag80 != null) {
+            // it is a template 2
+            byte[] dataTemp = tag80.getBytesValue();
+            // first 2 bytes are AIP, followed by xx AFL bytes
+            dataTemp = ArrayUtils.subarray(dataTemp, 2, dataTemp.length);
+            if (dataTemp != null) {
+                aflBytes = dataTemp.clone();
+            }
+        }
+        if (aflBytes != null) {
             // split array by 4 bytes
-            List<byte[]> tag94BytesList = divideArray(tag94Bytes, 4);
+            List<byte[]> tag94BytesList = divideArray(aflBytes, 4);
             int tag94BytesListLength = tag94BytesList.size();
             //writeToUiAppend(etLog, "tag94Bytes divided into " + tag94BytesListLength + " arrays");
             writeToUiAppend(etLog, "");
@@ -548,7 +573,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
                                 BerTlv tag5a = tlvsAfl.find(new BerTag(0x5a));
                                 if (tag5a != null) {
                                     byte[] tag5aBytes = tag5a.getBytesValue();
-                                    pan = bytesToHex(tag5aBytes);
+                                    pan = removeTrailingF(bytesToHex(tag5aBytes));
                                     Log.e(TAG, "found tag 0x5A PAN: " + pan);
                                 }
                                 BerTlv tag5f24 = tlvsAfl.find(new BerTag(0x5f, 0x24));
@@ -579,7 +604,21 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
         return pan + "_" + expirationDate;
     }
 
-    //
+    /**
+     * remove all trailing 0xF's trailing in the 10 length fiel tag 0x5a = PAN
+     * PAN is padded with 'F'
+     * @param input
+     * @return
+     */
+    private String removeTrailingF(String input) {
+        int index;
+        for (index = input.length() - 1; index >= 0; index--) {
+            if (input.charAt(index) != 'f') {
+                break;
+            }
+        }
+        return input.substring(0, index + 1);
+    }
 
     /**
      * ADVANCED CODE
